@@ -9,14 +9,20 @@
     "dev": "astro dev",
     "build": "astro build",
     "preview": "astro preview",
-    "astro": "astro"
+    "astro": "astro",
+    "format": "prettier --write **/*.{astro,css,js,ts,json,md,mdx,yml,yaml} --ignore-path .prettierignore"
   },
   "dependencies": {
-    "@tailwindcss/vite": "^4.3.3",
-    "astro": "^7.3.5",
-    "tailwindcss": "^4.3.3"
+    "@tailwindcss/vite": " ~4.3.3",
+    "astro": " ~7.3.5",
+    "tailwindcss": " ~4.3.3"
   },
   "allowScripts": {
     "esbuild": true
+  },
+  "devDependencies": {
+    "prettier": "~3.9.9",
+    "prettier-plugin-astro": "~1.1.0",
+    "prettier-plugin-tailwindcss": "~0.8.1"
   }
 }
