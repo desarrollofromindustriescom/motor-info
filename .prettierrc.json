@@ -20,11 +20,11 @@
    "embeddedLanguageFormatting": "auto",
    "singleAttributePerLine": true,
    "overrides": [
-    {
-      "files": "*.astro",
-      "options": {
-        "parser": "astro"
+      {
+         "files": "*.astro",
+         "options": {
+            "parser": "astro"
+         }
       }
-    }
-  ]
+   ]
 }
