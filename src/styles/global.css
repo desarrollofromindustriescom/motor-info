@@ -1,1 +1,11 @@
 @import 'tailwindcss';
+
+@theme {
+   --color-pr-black: #0d031b;
+   --color-pr-main: #ff0038;
+}
+
+@utility svg-to-black {
+   filter: brightness(0) saturate(100%) invert(5%) sepia(90%) saturate(1054%) hue-rotate(240deg) brightness(81%)
+      contrast(107%);
+}
