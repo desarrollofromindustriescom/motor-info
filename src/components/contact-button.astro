@@ -1,0 +1,50 @@
+---
+import PhoneIcon from '@icons/phone.svg';
+
+const data: ContactData = Astro.props.data;
+---
+
+<div
+   class="flex fixed bottom-7 right-7"
+   id="contact-button-wrapper"
+   data-phone={data.primaryPhone}
+   data-icon-src={PhoneIcon.src}
+></div>
+
+<script>
+   const contactButton: HTMLButtonElement = document.createElement('button');
+   const phoneIcon: HTMLImageElement = document.createElement('img');
+   const text: HTMLSpanElement = document.createElement('span');
+   const link: HTMLAnchorElement = document.createElement('a');
+
+   const handleButtonClick: Function = (phone: string): void => {
+      if (!phone) return;
+
+      link.href = `tel:${phone}`;
+
+      // document.appendChild(link)
+      link.click();
+      // document.removeChild(link)
+   };
+
+   phoneIcon.className = 'size-5 invert-100';
+
+   text.innerText = 'Llamar a contacto';
+   text.className = 'text-white font-bold text-base italic';
+
+   contactButton.className = 'px-6 py-4 rounded-full bg-pr-main flex items-center justify-center animate-pulse gap-2';
+
+   document.addEventListener('DOMContentLoaded', () => {
+      const wrapper: HTMLDivElement | null = document.querySelector('#contact-button-wrapper');
+
+      if (!wrapper) return;
+
+      phoneIcon.src = wrapper.dataset.iconSrc || '';
+
+      contactButton.addEventListener('click', () => handleButtonClick(wrapper.dataset.phone || ''));
+
+      contactButton.appendChild(phoneIcon);
+      contactButton.appendChild(text);
+      wrapper.appendChild(contactButton);
+   });
+</script>
