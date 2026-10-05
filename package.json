@@ -10,7 +10,8 @@
       "build": "astro build",
       "preview": "astro preview",
       "astro": "astro",
-      "format": "prettier --write **/*.{astro,css,js,ts,json,md,mdx,yml,yaml,mjs} --ignore-path .prettierignore"
+      "prepare": "husky",
+      "format": "prettier --write **/*.{astro,css,js,ts,json,md,mdx,mjs,yml,yaml,mjs} --ignore-path .prettierignore"
    },
    "dependencies": {
       "@astrojs/ts-plugin": "~1.10.12",
@@ -22,6 +23,8 @@
       "esbuild": true
    },
    "devDependencies": {
+      "husky": "~9.1.7",
+      "lint-staged": "~17.6.0",
       "prettier": "~3.9.9",
       "prettier-plugin-astro": "~1.1.0",
       "prettier-plugin-tailwindcss": "~0.8.1"
