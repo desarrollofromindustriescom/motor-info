@@ -1,10 +1,9 @@
 ---
-import '../styles/global.css';
+import '@styles/global.css';
 
-import IconSearch from '@icons/search.svg';
-import IconClose from '@icons/x.svg';
-
-const letters: string[] = 'abcdefghijklmnopqrstuvwxyz'.split('');
+import Directory from '@components/directory.astro';
+import DirectoryFilter from '@components/directory-filter.astro';
+import DirectorySearch from '@components/directory-search.astro';
 ---
 
 <html lang="es">
@@ -32,51 +31,13 @@ const letters: string[] = 'abcdefghijklmnopqrstuvwxyz'.split('');
    <body class="flex min-h-dvh flex-col">
       <header class="bg-pr-main flex w-full py-4 items-center justify-between px-4">
          <h1 class="text-white text-xl font-bold italic">Motor Info</h1>
-         <form
-            id="search-form"
-            class="bg-white p-1 flex w-1/3 gap-2 outline-2 outline-offset-4 outline-transparent [&:has(input:focus)]:outline-white transition-all"
-         >
-            <input
-               id="search-input"
-               type="text"
-               placeholder="Buscar..."
-               class="placeholder:italic h-8 flex-auto focus:outline-none rounded-xs px-1"
-            />
-            <button
-               id="search-button"
-               class="flex size-8 items-center justify-center rounded-xs bg-white cursor-pointer"
-            >
-               <img
-                  id="search-button-icon"
-                  alt="buscar"
-                  class="size-9/12 svg-to-black"
-                  data-search-icon={IconSearch.src}
-                  data-close-icon={IconClose.src}
-               />
-            </button>
-         </form>
+         <DirectorySearch />
       </header>
 
       <main class="flex-auto flex flex-col items-center justify-start gap-4 p-3">
-         <nav class="w-full flex">
-            <ul class="w-full flex flex-row items-center justify-center gap-2 flex-wrap">
-               {letters.map((letter: string) => (
-                  <li class="flex items-center justify-center bg-white text-pr-black/70 font-bold">
-                     <button
-                        name="filter-letter"
-                        value={letter}
-                        class="cursor-pointer size-5 hover:text-pr-main text-sm transition-all"
-                     >
-                        {letter.toUpperCase()}
-                     </button>
-                  </li>
-               ))}
-            </ul>
-         </nav>
-         <section
-            id="groups-wrapper"
-            class="w-full flex flex-col"
-         ></section>
+         <DirectoryFilter />
+
+         <Directory />
       </main>
 
       <footer class="w-full flex items-center justify-center bg-pr-black py-4">
@@ -84,194 +45,5 @@ const letters: string[] = 'abcdefghijklmnopqrstuvwxyz'.split('');
             Desarrollado por <b class="font-bold text-pr-main">FromIndustries</b>
          </span>
       </footer>
-
-      <script>
-         import env from '../env';
-         interface Register {
-            id: string;
-            name: string;
-            path: string;
-         }
-
-         interface RegisterGroup {
-            key: string;
-            registers: Register[];
-         }
-
-         const printGroups: Function = (groups: RegisterGroup[]): void => {
-            const groupsWrapper: HTMLElement | null = document.querySelector('#groups-wrapper');
-
-            if (!groupsWrapper) return;
-
-            groupsWrapper.innerHTML = '';
-
-            for (let i = 0; i < groups.length; i++) {
-               const group: RegisterGroup = groups[i];
-               const groupElement: HTMLDivElement = document.createElement('div');
-               const groupTitle: HTMLHeadingElement = document.createElement('h2');
-               const groupList: HTMLUListElement = document.createElement('ul');
-
-               groupTitle.textContent = group.key.toUpperCase();
-               groupTitle.className = 'text-pr-black font-bold text-xl border-b-2 border-pr-main';
-
-               groupList.className = 'grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-2 mt-2';
-
-               for (let j = 0; j < group.registers.length; j++) {
-                  const register: Register = group.registers[j];
-                  const registerItem: HTMLLIElement = document.createElement('li');
-                  const registerLink: HTMLAnchorElement = document.createElement('a');
-                  const registerPicture: HTMLImageElement = document.createElement('img');
-                  const registerText: HTMLSpanElement = document.createElement('span');
-
-                  registerLink.href = register.path;
-                  registerLink.className = 'flex flex-col items-center aspect-square w-full relative';
-
-                  registerPicture.src = `${env.picturesURL}/index-${register.id}.webp`;
-                  registerPicture.alt = register.name;
-                  registerPicture.className = 'size-full object-cover';
-
-                  registerText.textContent = register.name;
-                  registerText.className =
-                     'absolute bottom-0 left-0 w-full text-center bg-pr-black/70 text-white py-2 text-sm';
-
-                  registerLink.appendChild(registerPicture);
-                  registerLink.appendChild(registerText);
-                  registerItem.appendChild(registerLink);
-                  groupList.appendChild(registerItem);
-               }
-
-               groupElement.appendChild(groupTitle);
-               groupElement.appendChild(groupList);
-               groupsWrapper.appendChild(groupElement);
-            }
-         };
-
-         document.addEventListener('DOMContentLoaded', () => {
-            const registers: readonly Register[] = Object.freeze([
-               {
-                  id: '161b4cbc-77fc-4660-aa08-f58f03515140',
-                  name: 'Lorem Ipsum',
-                  path: '/lorem-ipsum',
-               },
-            ]);
-            const registersGroups: RegisterGroup[] = [];
-            const registersGroupsBuffer: { [key: string]: Register[] } = {};
-            const searchForm: HTMLFormElement | null = document.querySelector('#search-form');
-            const searchInput: HTMLInputElement | null = document.querySelector('#search-input');
-            const searchButton: HTMLButtonElement | null = document.querySelector('#search-button');
-            const searchButtonIcon: HTMLImageElement | null = document.querySelector('#search-button-icon');
-            const filterButtons: HTMLButtonElement[] = Array.from(
-               document.querySelectorAll('button[name="filter-letter"]'),
-            );
-            const filterButtonsBuffer: { [key: string]: HTMLButtonElement } = {};
-
-            let filterSelected: string | null = null;
-
-            if (!searchForm || !searchInput || !searchButton || !searchButtonIcon) return;
-
-            searchButtonIcon.src = searchButtonIcon.dataset.searchIcon || '';
-
-            for (let i = 0; i < registers.length; i++) {
-               const firstLetter: string = registers[i].name[0].toLowerCase();
-
-               if (!registersGroupsBuffer[firstLetter]) registersGroupsBuffer[firstLetter] = [];
-
-               registersGroupsBuffer[firstLetter].push(registers[i]);
-            }
-
-            for (const key in registersGroupsBuffer) {
-               registersGroups.push({
-                  key,
-                  registers: registersGroupsBuffer[key],
-               });
-            }
-
-            registersGroups.sort((a: RegisterGroup, b: RegisterGroup) => a.key.localeCompare(b.key));
-
-            printGroups(registersGroups);
-
-            searchForm.addEventListener('submit', (event: Event) => {
-               event.preventDefault();
-            });
-
-            searchInput.addEventListener('input', (e: InputEvent) => {
-               if (filterSelected && filterButtonsBuffer[filterSelected]) {
-                  filterButtonsBuffer[filterSelected].classList.remove('text-pr-main');
-               }
-
-               filterSelected = null;
-
-               searchButtonIcon.src =
-                  (searchInput.value.trim() !== ''
-                     ? searchButtonIcon.dataset.closeIcon
-                     : searchButtonIcon.dataset.searchIcon) || '';
-
-               const value = (e.currentTarget as HTMLInputElement).value.trim().toLowerCase();
-
-               if (value === '') {
-                  printGroups(registersGroups);
-                  return;
-               }
-
-               const fileteredRegisters: RegisterGroup[] = [];
-
-               for (let i = 0; i < registersGroups.length; i++) {
-                  const filteredRegistersInGroup: Register[] = registersGroups[i].registers.filter(
-                     (register: Register) => register.name.toLowerCase().includes(value),
-                  );
-
-                  if (filteredRegistersInGroup.length === 0) continue;
-
-                  fileteredRegisters.push({
-                     key: registersGroups[i].key,
-                     registers: filteredRegistersInGroup,
-                  });
-               }
-
-               printGroups(fileteredRegisters);
-            });
-
-            searchButton.addEventListener('click', () => {
-               if (searchInput.value.trim() === '') return;
-
-               searchInput.value = '';
-               searchButtonIcon.src = searchButtonIcon.dataset.searchIcon || '';
-               printGroups(registersGroups);
-            });
-
-            for (let i = 0; i < filterButtons.length; i++) {
-               filterButtonsBuffer[filterButtons[i].value] = filterButtons[i];
-
-               filterButtons[i].addEventListener('click', (e: PointerEvent) => {
-                  const letter: string = (e.currentTarget as HTMLButtonElement).value.toLowerCase();
-                  const group: Register[] = registersGroupsBuffer[letter] || [];
-
-                  searchInput.value = '';
-                  searchButtonIcon.src = searchButtonIcon.dataset.searchIcon || '';
-
-                  if (filterSelected && filterButtonsBuffer[filterSelected]) {
-                     filterButtonsBuffer[filterSelected].classList.remove('text-pr-main');
-                  }
-
-                  filterSelected = filterSelected === letter ? null : letter;
-
-                  if (filterSelected && filterButtonsBuffer[filterSelected]) {
-                     filterButtonsBuffer[filterSelected].classList.add('text-pr-main');
-                  }
-
-                  printGroups(
-                     !filterSelected
-                        ? registersGroups
-                        : [
-                             {
-                                key: letter,
-                                registers: group,
-                             },
-                          ],
-                  );
-               });
-            }
-         });
-      </script>
    </body>
 </html>

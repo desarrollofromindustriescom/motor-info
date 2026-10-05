@@ -4,7 +4,11 @@
    "exclude": ["dist"],
    "compilerOptions": {
       "paths": {
-         "@icons/*": ["./src/assets/icons/*"]
+         "@env": ["./src/env.ts"],
+         "@icons/*": ["./src/assets/icons/*"],
+         "@styles/*": ["./src/styles/*"],
+         "@scripts/*": ["./src/scripts/*"],
+         "@components/*": ["./src/components/*"]
       }
    }
 }

@@ -1,0 +1,73 @@
+---
+const letters: string[] = 'abcdefghijklmnopqrstuvwxyz'.split('');
+---
+
+<nav class="w-full flex">
+   <ul class="w-full flex flex-row items-center justify-center gap-2 flex-wrap">
+      {letters.map((letter: string) => (
+         <li class="flex items-center justify-center bg-white text-pr-black/70 font-bold">
+            <button
+               name="filter-letter"
+               value={letter}
+               class="cursor-pointer size-5 hover:text-pr-main text-sm transition-all"
+            >
+               {letter.toUpperCase()}
+            </button>
+         </li>
+      ))}
+   </ul>
+</nav>
+
+<script>
+   import { groups, handlers } from '../scripts/index';
+
+   const handleClearFilter: typeof handlers.clearFilter = (): void => {
+      if (selected && filters.buffer[selected]) filters.buffer[selected].classList.remove('text-pr-main');
+      selected = null;
+   };
+
+   const handleFilterClick: (event: Event) => void = (event: Event): void => {
+      handlers.clearSearch();
+
+      const letter: string = (event.currentTarget as HTMLButtonElement).value.toLowerCase();
+
+      if (letter === selected) {
+         handlers.printRegisters(groups.list);
+         handlers.clearFilter();
+         return;
+      }
+
+      const group: Register[] = groups.buffer[letter] || [];
+
+      if (selected) handlers.clearFilter();
+
+      selected = letter;
+      filters.buffer[selected].classList.add('text-pr-main');
+      handlers.printRegisters([
+         {
+            key: letter,
+            registers: group,
+         },
+      ]);
+   };
+
+   const filters: Data<HTMLButtonElement[], HTMLButtonElement> = {
+      list: [],
+      buffer: {},
+   };
+
+   let selected: string | null = null;
+
+   document.addEventListener('DOMContentLoaded', () => {
+      filters.list = Array.from(document.querySelectorAll('button[name="filter-letter"]'));
+
+      if (filters.list.length === 0) return;
+
+      handlers.clearFilter = handleClearFilter;
+
+      for (let i: number = 0; i < filters.list.length; i++) {
+         filters.buffer[filters.list[i].value] = filters.list[i];
+         filters.list[i].addEventListener('click', handleFilterClick);
+      }
+   });
+</script>
