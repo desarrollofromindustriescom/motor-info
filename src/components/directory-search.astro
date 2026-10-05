@@ -52,7 +52,7 @@ import IconClose from '@icons/x.svg';
 
       for (let i: number = 0; i < groups.list.length; i++) {
          const selected: Register[] = groups.list[i].registers.filter((register: Register) =>
-            register.name.toLowerCase().includes(value),
+            register.personal.name.toLowerCase().includes(value),
          );
 
          if (selected.length === 0) continue;

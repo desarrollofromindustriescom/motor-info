@@ -9,3 +9,7 @@
    filter: brightness(0) saturate(100%) invert(5%) sepia(90%) saturate(1054%) hue-rotate(240deg) brightness(81%)
       contrast(107%);
 }
+@utility svg-to-main {
+   filter: brightness(0) saturate(100%) invert(11%) sepia(73%) saturate(7344%) hue-rotate(342deg) brightness(108%)
+      contrast(110%);
+}

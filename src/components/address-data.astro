@@ -1,0 +1,15 @@
+---
+const data: AddressData = Astro.props.data;
+---
+
+<article class="flex w-full flex-col border-2 border-pr-main px-6 py-4 gap-3">
+   <h2 class="text-lg font-bold italic text-pr-main">Residencia</h2>
+   <ul class="w-full flex flex-col gap-1 [&_li]:text-sm">
+      <li>
+         <b>Municipio:</b> {data.city}
+      </li>
+      <li>
+         <b>Estado:</b> {data.state}
+      </li>
+   </ul>
+</article>

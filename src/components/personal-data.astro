@@ -1,0 +1,49 @@
+---
+const data: PersonalData = Astro.props.data;
+---
+
+<article class="flex w-full flex-col border-2 border-pr-main px-6 py-4 gap-3">
+   <h2 class="text-lg font-bold italic text-pr-main">Datos personales</h2>
+   <ul class="w-full flex flex-col gap-1 [&_li]:text-sm">
+      {!!data.name && (
+         <li>
+            <b>Nombre:</b> {data.name}
+         </li>
+      )}
+      {!!data.bloodType && (
+         <li>
+            <b>Tipo de sangre:</b> {data.bloodType}
+         </li>
+      )}
+      {!!data.age && (
+         <li>
+            <b>Edad:</b> {`${data.age} años`}
+         </li>
+      )}
+      {!!data.height && (
+         <li>
+            <b>Estatura:</b> {`${data.height} m.`}
+         </li>
+      )}
+      {!!data.weight && (
+         <li>
+            <b>Peso:</b> {`${data.weight} kg.`}
+         </li>
+      )}
+      {data.tatto !== undefined && (
+         <li>
+            <b>Tatuajes:</b> {data.tatto ? 'Sí' : 'No'}
+         </li>
+      )}
+      {data.piercing !== undefined && (
+         <li>
+            <b>Piercings:</b> {data.piercing ? 'Sí' : 'No'}
+         </li>
+      )}
+      {!!data.description && (
+         <li>
+            <b>Descripción:</b> {data.description}
+         </li>
+      )}
+   </ul>
+</article>

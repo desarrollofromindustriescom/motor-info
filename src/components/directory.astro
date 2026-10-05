@@ -37,10 +37,10 @@
             registerLink.className = 'flex flex-col items-center aspect-square w-full relative';
 
             registerPicture.src = `${env.picturesURL}/index-${register.id}.webp`;
-            registerPicture.alt = register.name;
+            registerPicture.alt = register.personal.name;
             registerPicture.className = 'size-full object-cover';
 
-            registerText.textContent = register.name;
+            registerText.textContent = register.personal.name;
             registerText.className =
                'absolute bottom-0 left-0 w-full text-center bg-pr-black/70 text-white py-2 text-sm';
 

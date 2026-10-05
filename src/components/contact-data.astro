@@ -1,0 +1,46 @@
+---
+const data: ContactData = Astro.props.data;
+const ranges: { start: number; end: number }[] = [
+   { start: 0, end: 3 },
+   { start: 3, end: 6 },
+   { start: 6, end: 10 },
+];
+---
+
+<article class="flex w-full flex-col border-2 border-pr-main px-6 py-4 gap-3">
+   <h2 class="text-lg font-bold italic text-pr-main">Datos de contacto</h2>
+   <ul class="w-full flex flex-col gap-1 [&_li]:text-sm">
+      {!!data.primaryName && (
+         <li>
+            <b>Contacto:</b> {data.primaryName}
+         </li>
+      )}
+      {!!data.primaryPhone && (
+         <li>
+            <b>Teléfono:</b>{' '}
+            <a
+               href={`tel:${data.primaryPhone}`}
+               class="text-pr-main italic underline"
+            >
+               {ranges.map(({ start, end }) => data.primaryPhone.slice(start, end)).join('-')}
+            </a>
+         </li>
+      )}
+      {!!data.secondaryName && (
+         <li>
+            <b>Contacto secundario:</b> {data.secondaryName}
+         </li>
+      )}
+      {!!data.secondaryPhone && (
+         <li>
+            <b>Teléfono secundario:</b>{' '}
+            <a
+               href={`tel:${data.secondaryPhone}`}
+               class="text-pr-main italic underline"
+            >
+               {ranges.map(({ start, end }) => (data.secondaryPhone || '').slice(start, end)).join('-')}
+            </a>
+         </li>
+      )}
+   </ul>
+</article>

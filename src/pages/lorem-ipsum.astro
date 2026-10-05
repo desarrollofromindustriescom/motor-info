@@ -1,0 +1,66 @@
+---
+import '@styles/global.css';
+
+import env from '@env';
+import { groups } from '@scripts/index';
+
+import PersonalData from '@components/personal-data.astro';
+import ContactData from '@components/contact-data.astro';
+import AddressData from '@components/address-data.astro';
+
+const list: Register[] = groups.buffer['l'] || [];
+const profile: Register | undefined = list.find((register: Register) => register.slug === 'lorem_ipsum');
+---
+
+<html lang="es">
+   <head>
+      <meta charset="utf-8" />
+      <link
+         rel="icon"
+         type="image/svg+xml"
+         href="/favicon.svg"
+      />
+      <link
+         rel="icon"
+         href="/favicon.ico"
+      />
+      <meta
+         name="viewport"
+         content="width=device-width"
+      />
+      <meta
+         name="generator"
+         content={Astro.generator}
+      />
+      <title>Lorem ipsum</title>
+   </head>
+   <body class="flex min-h-dvh flex-col">
+      <header class="bg-pr-main flex w-full py-4 items-center justify-start px-4 flex-col">
+         <h1 class="text-white text-xl font-bold italic">Lorem ipsum</h1>
+      </header>
+
+      {profile && (
+         <main class="flex-auto flex flex-col items-center sm:items-stretch justify-start sm:flex-row">
+            <section class="w-screen h-[100vw] sm:w-1/2 sm:min-w-1/2 sm:h-auto flex relative bg-pr-main">
+               <img
+                  src={`${env.picturesURL}/profile-${profile.id}.webp`}
+                  alt={profile.personal.name}
+                  class="size-full object-cover absolute top-0 left-0"
+               />
+            </section>
+
+            <section class="p-3 w-full sm:w-1/2 flex flex-col gap-2">
+               <PersonalData data={profile.personal} />
+               <ContactData data={profile.contact} />
+               {!!profile.address && <AddressData data={profile.address} />}
+            </section>
+         </main>
+      )}
+
+      <footer class="w-full flex items-center justify-center bg-pr-black py-4">
+         <span class="text-white">
+            Desarrollado por <b class="font-bold text-pr-main">FromIndustries</b>
+         </span>
+      </footer>
+   </body>
+</html>
