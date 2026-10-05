@@ -7,6 +7,7 @@
    },
    "scripts": {
       "dev": "astro dev",
+      "dev-ip": "astro dev --host 192.168.3.57",
       "build": "astro build",
       "preview": "astro preview",
       "astro": "astro",
